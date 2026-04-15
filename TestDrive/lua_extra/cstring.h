@@ -1,5 +1,5 @@
 //================================================================================
-// Copyright (c) 2013 ~ 2024. HyungKi Jeong(clonextop@gmail.com)
+// Copyright (c) 2013 ~ 2026. HyungKi Jeong(clonextop@gmail.com)
 // Freely available under the terms of the 3-Clause BSD License
 // (https://opensource.org/licenses/BSD-3-Clause)
 //
@@ -31,14 +31,13 @@
 // OF SUCH DAMAGE.
 //
 // Title : utility framework
-// Rev.  : 5/27/2024 Mon (clonextop@gmail.com)
+// Rev.  : 4/8/2026 Wed (clonextop@gmail.com)
 //================================================================================
 #ifndef __CSTRING_H__
 #define __CSTRING_H__
 #include <string>
 
 using namespace std;
-#define UNUSE_CSTRING_ICONV
 
 class cstring
 {
@@ -47,6 +46,10 @@ public:
 	cstring(const string &s);
 	cstring(const char *s);
 	cstring(const char *s, size_t size);
+#ifndef UNUSE_CSTRING_ICONV
+	cstring(const wchar_t *s);				// to UTF-8
+	cstring(const wchar_t *s, size_t size); // to UTF-8
+#endif
 	virtual ~cstring(void);
 
 	bool	 operator>=(const cstring &s);
@@ -63,25 +66,29 @@ public:
 	int		 Compare(const char *s);
 	bool	 CompareFront(const char *s) const;
 	bool	 CompareBack(const char *s) const;
-	bool	 CutFront(const char *s, bool bRecursive = false);	 // delete ~s
-	bool	 CutBack(const char *s, bool bRecursive = false);	 // delete s~
-	bool	 DeleteFront(const char *s);						 // find first front 's' and delete
-	bool	 DeleteBack(const char *s);							 // find last 's' and delete
-	bool	 DeleteBlock(const char *sExpression, int iPos = 0); // ex) sExpression = "[*]"
-	int FindVariableString(cstring &sVar, const char *sExpression = "$(*)", int iPos = 0); // ex : "$(" variable ")"
-	int FindNameString(const char *sName, int iPos = 0); // ex) sName = 'box', 'abox'(X), 'a box'(O)
-	operator const char *(void) const
+	bool	 CutFront(const char *s, bool bRecursive = false);									// delete ~s
+	bool	 CutBack(const char *s, bool bRecursive = false);									// delete s~
+	bool	 DeleteFront(const char *s);														// find first front 's' and delete
+	bool	 DeleteBack(const char *s);															// find last 's' and delete
+	bool	 DeleteBlock(const char *sExpression, int iPos = 0);								// ex) sExpression = "[*]"
+	int		 FindVariableString(cstring &sVar, const char *sExpression = "$(*)", int iPos = 0); // ex : "$(" variable ")"
+	int		 FindNameString(const char *sName, int iPos = 0);									// ex) sName = 'box', 'abox'(X), 'a box'(O)
+			 operator const char *(void) const
 	{
 		return m_sStr.c_str();
 	}
+#ifndef UNUSE_CSTRING_ICONV
+	operator wstring(void) const;
+#endif
 	void	MakeUpper(void);
 	void	MakeLower(void);
+	void	MakeFullPath(void);
 	bool	Replace(const char *sSearch, const char *sReplace, bool bRecursive = false);
 	bool	ReplaceVariable(const char *sSearch, const char *sReplace);
 	void	TrimLeft(const char *sDelim);
 	void	TrimRight(const char *sDelim);
 	void	Trim(const char *sDelim);
-	int		Length(void) const;
+	size_t	Length(void) const;
 	cstring Tokenize(int &iPos, const char *sDelim = NULL);
 	int		SearchBraket(int iPos = 0);
 	int		RetrieveTag(const char **sTagList, int iTagSize = 0);
@@ -90,14 +97,16 @@ public:
 	void	Set(const char *sStr);
 	void	Append(const char *sStr);
 	void	Append(char ch);
-	int		CheckFileExtension(const char **sExtList);
-	bool	GetEnvironment(const char *sKey);
-	void	SetEnvironment(const char *sKey);
 #ifndef UNUSE_CSTRING_ICONV
-	bool ChangeCharset(const char *szSrcCharset, const char *szDstCharset);
-	bool ChangeCharsetToUTF8(void);
-	bool ChangeCharsetToANSI(void);
+	void Append(const wchar_t *sStr);
+	void Append(const wchar_t *sStr, size_t size);
 #endif
+	int			CheckFileExtension(const char **sExtList);
+	bool		GetEnvironment(const char *sKey);
+	void		SetEnvironment(const char *sKey);
+	bool		ChangeCharset(const char *szSrcCharset, const char *szDstCharset);
+	bool		ChangeCharsetToUTF8(void);
+	bool		ChangeCharsetToANSI(void);
 	inline bool IsEmpty(void) const
 	{
 		return Length() == 0;

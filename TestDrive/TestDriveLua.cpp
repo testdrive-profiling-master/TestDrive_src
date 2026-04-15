@@ -23,10 +23,14 @@ class lua_cstring : public cstring
 	int iTokenizePos;
 
 public:
-	lua_cstring(LuaRef v)
+	lua_cstring(void)
 	{
-		if (v.isString()) {
-			m_sStr = v.tostring();
+		iTokenizePos = 0;
+	}
+	lua_cstring(LuaRef s)
+	{
+		if (!s.isNil()) {
+			m_sStr = s.tostring();
 		}
 
 		iTokenizePos = 0;
@@ -91,6 +95,10 @@ public:
 	void MakeLower(void)
 	{
 		cstring::MakeLower();
+	}
+	void MakeFullPath(void)
+	{
+		cstring::MakeFullPath();
 	}
 	bool Replace(const char* sSearch, const char* sReplace, bool bRecursive = false)
 	{
@@ -709,7 +717,7 @@ protected:
 	CString		m_sName;
 };
 
-int			luaopen_lfs(lua_State* L);;
+int			luaopen_lfs(lua_State* L);
 bool TestDriveLua::Initialize(void){
 	Release();
 
@@ -738,7 +746,7 @@ bool TestDriveLua::Initialize(void){
 		.addFunction("IsEOF", &TextFile::IsEOF)
 		.endClass()
 		.beginClass<lua_cstring>("String")
-		.addConstructor<void (*)(LuaRef v)>()
+		.addConstructor<void (*)(LuaRef s)>()
 		.addFunction("Replace", &lua_cstring::Replace)
 		.addFunction("ReplaceVariable", &lua_cstring::ReplaceVariable)
 		.addProperty("s", &lua_cstring::c_str, &lua_cstring::Set)
@@ -763,6 +771,7 @@ bool TestDriveLua::Initialize(void){
 		.addFunction("DeleteBlock", &lua_cstring::DeleteBlock)
 		.addFunction("MakeUpper", &lua_cstring::MakeUpper)
 		.addFunction("MakeLower", &lua_cstring::MakeLower)
+		.addFunction("MakeFullPath", &lua_cstring::MakeFullPath)
 		.addFunction("CheckFileExtension", &lua_cstring::CheckFileExtensionLua)
 		.addFunction("GetEnvironment", &lua_cstring::GetEnvironment)
 		.addFunction("SetEnvironment", &lua_cstring::SetEnvironment)

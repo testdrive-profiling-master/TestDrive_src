@@ -1,5 +1,5 @@
 //================================================================================
-// Copyright (c) 2013 ~ 2024. HyungKi Jeong(clonextop@gmail.com)
+// Copyright (c) 2013 ~ 2026. HyungKi Jeong(clonextop@gmail.com)
 // Freely available under the terms of the 3-Clause BSD License
 // (https://opensource.org/licenses/BSD-3-Clause)
 //
@@ -31,12 +31,18 @@
 // OF SUCH DAMAGE.
 //
 // Title : utility framework
-// Rev.  : 5/27/2024 Mon (clonextop@gmail.com)
+// Rev.  : 4/8/2026 Wed (clonextop@gmail.com)
 //================================================================================
 #include "stdafx.h"
+// cstrings
 #include "cstring.h"
 #include <stdarg.h>
 #include <vector>
+#include <filesystem>
+#ifndef UNUSE_CSTRING_ICONV
+#	include <iconv.h>
+#endif
+namespace fs = std::filesystem;
 
 cstring::cstring(void) {}
 
@@ -55,6 +61,15 @@ cstring::cstring(const char *s)
 cstring::cstring(const char *s, size_t size) : m_sStr(s, size) // specific size setup
 {
 }
+
+#ifndef UNUSE_CSTRING_ICONV
+cstring::cstring(const wchar_t *s) : cstring(s, wcslen(s)) {}
+
+cstring::cstring(const wchar_t *s, size_t size)
+{
+	Append(s, size);
+}
+#endif
 
 cstring::~cstring(void) {}
 
@@ -133,6 +148,30 @@ char &cstring::operator[](int iIndex)
 	return m_sStr[iIndex];
 }
 
+#ifndef UNUSE_CSTRING_ICONV
+cstring::operator wstring(void) const
+{
+	wstring wStr;
+	size_t	in_size = Length();
+	if (in_size) {
+		iconv_t	 it		  = iconv_open("WCHAR_T", "UTF-8");
+		size_t	 out_size = in_size * 2;
+		wchar_t *ws		  = new wchar_t[in_size];
+		char	*in_s	  = (char *)m_sStr.c_str();
+
+		while (in_size) {
+			char  *out_s	 = (char *)ws;
+			size_t left_size = out_size;
+			iconv(it, &in_s, &in_size, &out_s, &left_size);
+			wStr.append(ws, (out_size - left_size) >> 1);
+		}
+		delete[] ws;
+		iconv_close(it);
+	}
+	return wStr;
+}
+#endif
+
 int cstring::Compare(const char *s)
 {
 	const char *s1 = c_str();
@@ -179,12 +218,12 @@ bool cstring::CompareBack(const char *s) const
 	if (!s)
 		return false;
 
-	int iPos = m_sStr.rfind(s);
+	int64_t iPos = m_sStr.rfind(s);
 
 	if (iPos < 0)
 		return false;
 
-	return (iPos == Length() - strlen(s));
+	return (iPos == (int64_t)(Length() - strlen(s)));
 }
 
 bool cstring::CutFront(const char *s, bool bRecursive)
@@ -306,7 +345,7 @@ static bool __RetrieveBracketString(const char *sSearch, int &iPos, const char *
 			iPos++;
 
 			if (bString) {
-				if (!sSearch[iPos] == '\"') { // string in string
+				if (sSearch[iPos] == '\"') { // string in string
 					iPos++;
 					break;
 				}
@@ -422,6 +461,13 @@ void cstring::MakeLower(void)
 	}
 }
 
+void cstring::MakeFullPath(void)
+{
+	fs::path rel_path = m_sStr;
+	fs::path abs_path = fs::absolute(rel_path);
+	m_sStr			  = abs_path.string();
+}
+
 bool cstring::Replace(const char *sSearch, const char *sReplace, bool bRecursive)
 {
 	bool bRet		= false;
@@ -471,7 +517,7 @@ bool cstring::ReplaceVariable(const char *sSearch, const char *sReplace)
 			}
 
 			// post-fix error check
-			if (iPos + iSearchLen < m_sStr.length()) {
+			if ((size_t)(iPos + iSearchLen) < m_sStr.length()) {
 				char ch = m_sStr[iPos + iSearchLen];
 
 				if (isalpha(ch) || isdigit(ch) || ch == '_') {
@@ -494,8 +540,7 @@ bool cstring::ReplaceVariable(const char *sSearch, const char *sReplace)
 
 void cstring::TrimLeft(const char *sDelim)
 {
-	const char *s = c_str();
-	char		ch;
+	char ch;
 
 	if (!sDelim)
 		return;
@@ -541,7 +586,7 @@ cstring cstring::Tokenize(int &iPos, const char *sDelim)
 {
 	cstring str;
 
-	if (iPos >= 0 && iPos < Length()) {
+	if (iPos >= 0 && iPos < (int)Length()) {
 		const char *s = c_str() + iPos;
 
 		if (sDelim) { // tokenize by deliminator
@@ -670,7 +715,7 @@ static bool __SearchBracket(const char *sSearch, int &iPos, const char *sEnd = N
 
 int cstring::SearchBraket(int iPos)
 {
-	if (iPos >= 0 && iPos < Length()) {
+	if (iPos >= 0 && iPos < (int)Length()) {
 		if (__SearchBracket(c_str(), iPos)) {
 			return iPos;
 		}
@@ -679,7 +724,7 @@ int cstring::SearchBraket(int iPos)
 	return -1;
 }
 
-int cstring::Length(void) const
+size_t cstring::Length(void) const
 {
 	return strlen(c_str());
 }
@@ -694,6 +739,8 @@ int cstring::RetrieveTag(const char **sTagList, int iTagSize)
 	return -1;
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-format-attribute"
 void cstring::Format(const char *sFormat, ...)
 {
 	if (sFormat) {
@@ -747,6 +794,7 @@ void cstring::AppendFormat(const char *sFormat, ...)
 		}
 	}
 }
+#pragma GCC diagnostic pop
 
 void cstring::Set(const char *sStr)
 {
@@ -767,6 +815,32 @@ void cstring::Append(char ch)
 	if (ch)
 		m_sStr += ch;
 }
+
+#ifndef UNUSE_CSTRING_ICONV
+void cstring::Append(const wchar_t *sStr)
+{
+	Append(sStr, wcslen(sStr));
+}
+
+void cstring::Append(const wchar_t *sStr, size_t size)
+{
+	if (sStr && size) {
+		iconv_t it	 = iconv_open("UTF-8", "WCHAR_T");
+		char   *in_s = (char *)sStr;
+		char	dst_s[4096];
+		size *= 2;
+
+		while (size) {
+			char  *out_s	= dst_s;
+			size_t out_size = 4096;
+			iconv(it, &in_s, &size, &out_s, &out_size);
+			m_sStr.append(dst_s, 4096 - out_size);
+		}
+
+		iconv_close(it);
+	}
+}
+#endif
 
 int cstring::CheckFileExtension(const char **sExtList)
 {
@@ -803,13 +877,23 @@ static const char *__sEnvFileName = "testdrive.ini";
 
 static bool		   __GetEnvString(cstring sKey, cstring &sAppName, cstring &sKeyName, cstring &sEnvPath)
 {
-	if (!sEnvPath.GetEnvironment("TESTDRIVE_DIR"))
-		return false;
-
-	sEnvPath.Append(__sEnvFileName);
 	int iPos = 0;
 	sKeyName = sKey.Tokenize(iPos, __sEnvDelim);
-	sAppName = sKey.Tokenize(iPos, __sEnvDelim);
+	if (iPos > 0) {
+		sAppName = sKey.Tokenize(iPos, __sEnvDelim);
+		if (iPos > 0) {
+			sEnvPath = sKey.Tokenize(iPos, __sEnvDelim);
+		}
+	}
+
+	if (sEnvPath.IsEmpty()) {
+		if (!sEnvPath.GetEnvironment("TESTDRIVE_DIR"))
+			return false;
+		sEnvPath.Append(__sEnvFileName);
+	} else {
+		// change to absolute path
+		sEnvPath.MakeFullPath();
+	}
 
 	if (sKeyName.IsEmpty() || sAppName.IsEmpty())
 		return false;
@@ -821,8 +905,9 @@ static bool		   __GetEnvString(cstring sKey, cstring &sAppName, cstring &sKeyNam
 bool cstring::GetEnvironment(const char *sKey)
 {
 	if (sKey) {
-		if (strstr(sKey, __sEnvDelim)) {
+		if (strstr(sKey, __sEnvDelim)) { // ex) "KEY@APP[@file]"
 #ifdef WIN32
+			bool bRet = true;
 			// in testdrive.ini
 			m_sStr.clear();
 			cstring sAppName, sKeyName, sEnvPath;
@@ -836,10 +921,12 @@ bool cstring::GetEnvironment(const char *sKey)
 
 				if (GetPrivateProfileStringA(sAppName, sKeyName, NULL, sData, 1024 * 64, sEnvPath))
 					m_sStr = sData;
+				else
+					bRet = false;
 
 				delete[] sData;
 			}
-			return true;
+			return bRet;
 #else
 			return false;
 #endif
@@ -863,14 +950,18 @@ static void setenv(const char *sKey, const char *sData, int replace)
 {
 	cstring sEnv;
 	sEnv.Format("%s=%s", sKey, sData);
+#ifdef _MSC_VER
+	_putenv(sEnv);
+#else
 	putenv(sEnv);
+#endif
 }
 #endif
 
 void cstring::SetEnvironment(const char *sKey)
 {
 	if (sKey) {
-		if (strstr(sKey, __sEnvDelim)) {
+		if (strstr(sKey, __sEnvDelim)) { // ex) "KEY@APP[@file]"
 #ifdef WIN32
 			// in testdrive.ini
 			cstring sAppName, sKeyName, sEnvPath;
@@ -923,50 +1014,54 @@ static bool is_utf8(const char *string)
 	return true;
 }
 
-#ifndef UNUSE_CSTRING_ICONV
-#	include <iconv.h>
-
 bool cstring::ChangeCharset(const char *szSrcCharset, const char *szDstCharset)
 {
-	bool	bRet = false;
-	iconv_t it	 = iconv_open(szDstCharset, szSrcCharset);
+#ifndef UNUSE_CSTRING_ICONV
+	iconv_t it = iconv_open(szDstCharset, szSrcCharset);
 
 	if (it != (iconv_t)(-1)) {
 		size_t nSrcStrLen = Length();
-		size_t nDstStrLen = nSrcStrLen * 2 + 12 + 1;
-		char  *sIn		  = new char[nSrcStrLen + 1];
-		char  *sInput	  = sIn;
+		size_t nDstStrLen = nSrcStrLen * 2 + 16;
+		char  *sInput	  = (char *)m_sStr.c_str();
 		char  *sOut		  = new char[nDstStrLen];
-		char  *sOutput	  = sOut;
-		strcpy(sIn, m_sStr.c_str());
-		memset(sOut, 0, nDstStrLen);
+		string sResult;
 
-		if (iconv(it, &sInput, &nSrcStrLen, &sOutput, &nDstStrLen) != (size_t)(-1)) {
-			m_sStr = sOut;
-			bRet   = true;
+		while (nSrcStrLen) {
+			char  *sOutput	 = sOut;
+			size_t sOut_size = nDstStrLen;
+			iconv(it, &sInput, &nSrcStrLen, &sOutput, &sOut_size);
+			sResult.append(sOut, nDstStrLen - sOut_size);
 		}
+		m_sStr = sResult;
 
 		iconv_close(it);
-		delete[] sIn;
 		delete[] sOut;
+		return true;
 	}
-
-	return bRet;
+#endif
+	return false;
 }
 
 bool cstring::ChangeCharsetToUTF8(void)
 {
+#ifndef UNUSE_CSTRING_ICONV
 	if (is_utf8(m_sStr.c_str()))
 		return true;
 
 	return ChangeCharset("EUC-KR", "UTF-8//IGNORE");
+#else
+	return false;
+#endif
 }
 
 bool cstring::ChangeCharsetToANSI(void)
 {
+#ifndef UNUSE_CSTRING_ICONV
 	if (!is_utf8(m_sStr.c_str()))
 		return true;
 
 	return ChangeCharset("UTF-8", "EUC-KR//IGNORE");
-}
+#else
+	return false;
 #endif
+}
