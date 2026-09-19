@@ -18,8 +18,6 @@ CReportView::CReportView(){
 	m_CharFormat.cbSize	= sizeof(CHARFORMAT2);
 	m_ParaFormat.cbSize	= sizeof(PARAFORMAT);
 
-	//SetFont(_T("System"));
-
 	m_CharStart	= 0;
 	m_CharEnd	= 0;
 
@@ -31,33 +29,30 @@ CReportView::~CReportView()
 {
 }
 
-BOOL CReportView::Create(CWnd* pParentWnd){
+BOOL CReportView::Create(CWnd* pParentWnd) {
 	CRect rc;
 	m_Layout.GetViewRect(&rc);
-	BOOL bRet = CWnd::Create(NULL, m_sViewName, WS_VISIBLE|WS_CHILD|WS_CLIPCHILDREN|WS_CLIPSIBLINGS, rc, pParentWnd, GetLastWindowID(pParentWnd));
-	if(bRet){
+	BOOL bRet = CWnd::Create(NULL, m_sViewName, WS_VISIBLE | WS_CHILD | WS_CLIPCHILDREN | WS_CLIPSIBLINGS, rc, pParentWnd, GetLastWindowID(pParentWnd));
+	if (bRet) {
 		GetClientRect(&rc);
-		m_Edit.Create(WS_VISIBLE|WS_CHILD|WS_VSCROLL|WS_HSCROLL|ES_AUTOVSCROLL|ES_AUTOHSCROLL|ES_MULTILINE|ES_WANTRETURN, rc, this, AFX_IDW_PANE_FIRST);
-	}
-	m_Edit.SetEventMask(ENM_LINK | ENM_SELCHANGE | ENM_PROTECTED);
-	BringWindowToTop();
-	//m_Edit.SendMessage(EM_AUTOURLDETECT, TRUE, 0);
-	{
-		int tabsize = 14;
-		m_Edit.SendMessage(EM_SETTABSTOPS, 1, (LPARAM)&tabsize);
-	}
+		m_Edit.Create(WS_VISIBLE | WS_CHILD | WS_VSCROLL | WS_HSCROLL | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_MULTILINE | ES_WANTRETURN, rc, this, AFX_IDW_PANE_FIRST + 1);
+		m_Edit.SetEventMask(ENM_LINK | ENM_SELCHANGE | ENM_PROTECTED);
+		BringWindowToTop();
+		//m_Edit.SendMessage(EM_AUTOURLDETECT, TRUE, 0);
+		{
+			int tabsize = 14;
+			m_Edit.SendMessage(EM_SETTABSTOPS, 1, (LPARAM)&tabsize);
+		}
 
-	// 자동 폰트 변경 (키 입력이 들어올시 default format 이 적용되도록 함.)
-	m_Edit.SendMessage( EM_SETLANGOPTIONS , 0, (LPARAM)(m_Edit.SendMessage( EM_GETLANGOPTIONS, 0, 0 ) & ~IMF_AUTOFONT) );
-	m_Edit.LimitText(-1);	//Set the control to accept the maximum amount of text
-	//m_Edit.SetOptions(ECOOP_OR, ECO_AUTOVSCROLL | ECO_AUTOHSCROLL | ECO_NOHIDESEL | ECO_SAVESEL | ECO_SELECTIONBAR);
+		// 자동 폰트 변경 (키 입력이 들어올시 default format 이 적용되도록 함.)
+		m_Edit.SendMessage(EM_SETLANGOPTIONS, 0, (LPARAM)(m_Edit.SendMessage(EM_GETLANGOPTIONS, 0, 0) & ~IMF_AUTOFONT));
+		m_Edit.LimitText(-1);	//Set the control to accept the maximum amount of text
+		//m_Edit.SetOptions(ECOOP_OR, ECO_AUTOVSCROLL | ECO_AUTOHSCROLL | ECO_NOHIDESEL | ECO_SAVESEL | ECO_SELECTIONBAR);
 
-	// 고정 폭 글꼴
-	/*switch (g_Localization.CurrentLocale()->dwLangID) {
-	case LANG_KOREAN:		SetFont(_T("Dotumche"));			break;
-	default:				SetFont(_T("Cascadia Mono"));		break;
-	}*/
-	SetFont(_T("Cascadia Mono"));
+		// 고정 폭 글꼴
+		m_Font.CreatePointFont(100, _T("Cascadia Mono"));
+		m_Edit.SetFont(&m_Font);
+	}
 
 	return bRet;
 }
@@ -75,6 +70,11 @@ void CReportView::UpdateLayout(void){
 	SetWindowPos(NULL, m_Layout.ViewX(), m_Layout.ViewY(), m_Layout.ViewWidth(), m_Layout.ViewHeight(), SWP_NOACTIVATE | SWP_NOZORDER);
 	//OnSize(SIZE_RESTORED, m_Layout.GetWidth(), m_Layout.GetHeight());
 	//Invalidate(FALSE);
+	if (m_Edit.GetSafeHwnd()) {
+		CRect rc;
+		GetClientRect(&rc);
+		m_Edit.SetWindowPos(NULL, rc.left, rc.top, rc.Width(), rc.Height(), SWP_NOZORDER | SWP_NOACTIVATE);
+	}
 }
 
 BOOL CReportView::SetDescription(LPCTSTR lpszFileName){
@@ -399,9 +399,9 @@ BEGIN_MESSAGE_MAP(CReportView, CViewObject)
 	ON_WM_NCPAINT()
 	ON_WM_LBUTTONUP()
 	ON_WM_SETFOCUS()
-	ON_NOTIFY(EN_REQUESTRESIZE, AFX_IDW_PANE_FIRST, OnRequestResize)
-	ON_NOTIFY(EN_LINK, AFX_IDW_PANE_FIRST, OnLink)
-	ON_NOTIFY(EN_PROTECTED, AFX_IDW_PANE_FIRST, OnProtected)
+	ON_NOTIFY(EN_REQUESTRESIZE, AFX_IDW_PANE_FIRST + 1, OnRequestResize)
+	ON_NOTIFY(EN_LINK, AFX_IDW_PANE_FIRST + 1, OnLink)
+	ON_NOTIFY(EN_PROTECTED, AFX_IDW_PANE_FIRST + 1, OnProtected)
 
 END_MESSAGE_MAP()
 

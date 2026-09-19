@@ -121,27 +121,27 @@ public:
 	}
 	inline int find(char ch, int pos = 0)
 	{
-		return m_sStr.find(ch, pos);
+		return (int)m_sStr.find(ch, pos);
 	}
 	inline int find(const char *s, int pos = 0)
 	{
-		return m_sStr.find(s, pos);
+		return (int)m_sStr.find(s, pos);
 	}
 	inline int rfind(const char *s)
 	{
-		return m_sStr.rfind(s);
+		return (int)m_sStr.rfind(s);
 	}
 	inline int rfind(char ch)
 	{
-		return m_sStr.rfind(ch);
+		return (int)m_sStr.rfind(ch);
 	}
 	inline int size(void)
 	{
-		return m_sStr.size();
+		return (int)m_sStr.size();
 	}
 	inline int length(void)
 	{
-		return m_sStr.length();
+		return (int)m_sStr.length();
 	}
 	inline void clear(void)
 	{

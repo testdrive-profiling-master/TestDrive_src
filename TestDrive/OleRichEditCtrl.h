@@ -31,7 +31,6 @@ public:
 	void PostInitialize(void);
 
 	long StreamInFromResource(int iRes, LPCTSTR sType);
-	void Test(void);
 	void SetScale(int iScale);
 
 	// interface
@@ -43,11 +42,14 @@ public:
 
 	int SetTextEx(LPCTSTR lpstrText, DWORD dwFlags = ST_SELECTION, UINT uCodePage = 1200)
 	{
-		CStringA sLine(lpstrText);
-		SETTEXTEX ste = { 0 };
-		ste.flags		= dwFlags;
-		ste.codepage	= uCodePage;
-		return (int)::SendMessage(m_hWnd, EM_SETTEXTEX, (WPARAM)&ste, (LPARAM)((const char*)sLine));
+		if (lpstrText) {
+			CString sLine(lpstrText);
+			SETTEXTEX ste = { 0 };
+			ste.flags = dwFlags;
+			ste.codepage = uCodePage;
+			return (int)::SendMessage(m_hWnd, EM_SETTEXTEX, (WPARAM)&ste, (LPARAM)(sLine.GetBuffer()));
+		}
+		return 0;
 	}
 
 	BOOL	m_bEditable;

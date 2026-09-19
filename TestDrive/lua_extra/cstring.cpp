@@ -207,7 +207,7 @@ int cstring::Compare(const char *s)
 
 bool cstring::CompareFront(const char *s) const
 {
-	if (!s)
+	if (!s || !*s || m_sStr.empty())
 		return false;
 
 	return (m_sStr.find(s) == 0);
@@ -215,7 +215,7 @@ bool cstring::CompareFront(const char *s) const
 
 bool cstring::CompareBack(const char *s) const
 {
-	if (!s)
+	if (!s || !*s || m_sStr.empty())
 		return false;
 
 	int64_t iPos = m_sStr.rfind(s);
@@ -228,8 +228,8 @@ bool cstring::CompareBack(const char *s) const
 
 bool cstring::CutFront(const char *s, bool bRecursive)
 {
-	if (s) {
-		int iPos = bRecursive ? m_sStr.rfind(s) : m_sStr.find(s);
+	if (s && *s && !m_sStr.empty()) {
+		int iPos = bRecursive ? (int)m_sStr.rfind(s) : (int)m_sStr.find(s);
 
 		if (iPos >= 0) {
 			m_sStr.erase(0, iPos + strlen(s));
@@ -242,8 +242,8 @@ bool cstring::CutFront(const char *s, bool bRecursive)
 
 bool cstring::CutBack(const char *s, bool bRecursive)
 {
-	if (s) {
-		int iPos = bRecursive ? m_sStr.find(s) : m_sStr.rfind(s);
+	if (s && *s && !m_sStr.empty()) {
+		int iPos = bRecursive ? (int)m_sStr.find(s) : (int)m_sStr.rfind(s);
 
 		if (iPos >= 0) {
 			m_sStr.erase(iPos, -1);
@@ -256,8 +256,8 @@ bool cstring::CutBack(const char *s, bool bRecursive)
 
 bool cstring::DeleteFront(const char *s)
 {
-	if (s) {
-		int iPos = m_sStr.find(s);
+	if (s && *s && !m_sStr.empty()) {
+		int iPos = (int)m_sStr.find(s);
 
 		if (iPos >= 0) {
 			m_sStr.erase(iPos, strlen(s));
@@ -269,8 +269,8 @@ bool cstring::DeleteFront(const char *s)
 }
 bool cstring::DeleteBack(const char *s)
 {
-	if (s) {
-		int iPos = m_sStr.rfind(s);
+	if (s && *s && !m_sStr.empty()) {
+		int iPos = (int)m_sStr.rfind(s);
 
 		if (iPos >= 0) {
 			m_sStr.erase(iPos, strlen(s));
@@ -291,7 +291,7 @@ bool cstring::DeleteBlock(const char *sExpression, int iPos)
 static bool __RetrieveBracketString(const char *sSearch, int &iPos, const char *sEnd)
 {
 	bool bString = (strcmp(sEnd, "\"") == 0);
-	int	 iLen	 = strlen(sEnd);
+	int	 iLen	 = (int)strlen(sEnd);
 
 	for (;; iPos++) {
 		switch (sSearch[iPos]) {
@@ -408,7 +408,7 @@ int cstring::FindVariableString(cstring &sVar, const char *sExpression, int iPos
 int cstring::FindNameString(const char *sName, int iPos)
 {
 	if (sName) {
-		int iLen = strlen(sName);
+		int iLen = (int)strlen(sName);
 
 		if (iLen) {
 		RETRY:
@@ -445,7 +445,7 @@ int cstring::FindNameString(const char *sName, int iPos)
 
 void cstring::MakeUpper(void)
 {
-	int iLen = Length();
+	int iLen = (int)Length();
 
 	for (int i = 0; i < iLen; i++) {
 		m_sStr[i] = toupper(m_sStr[i]);
@@ -454,7 +454,7 @@ void cstring::MakeUpper(void)
 
 void cstring::MakeLower(void)
 {
-	int iLen = Length();
+	int iLen = (int)Length();
 
 	for (int i = 0; i < iLen; i++) {
 		m_sStr[i] = tolower(m_sStr[i]);
@@ -472,12 +472,12 @@ bool cstring::Replace(const char *sSearch, const char *sReplace, bool bRecursive
 {
 	bool bRet		= false;
 	int	 iPos		= 0;
-	int	 iSearchLen = sSearch ? strlen(sSearch) : 0;
+	int	 iSearchLen = sSearch ? (int)strlen(sSearch) : 0;
 
 	if (sSearch != NULL && iSearchLen != 0) {
-		int iReplaceLen = sReplace ? strlen(sReplace) : 0;
+		int iReplaceLen = sReplace ? (int)strlen(sReplace) : 0;
 
-		while ((iPos = m_sStr.find(sSearch, iPos)) >= 0) {
+		while ((iPos = (int)m_sStr.find(sSearch, iPos)) >= 0) {
 			bRet = true;
 			m_sStr.erase(iPos, iSearchLen);
 
@@ -498,12 +498,12 @@ bool cstring::ReplaceVariable(const char *sSearch, const char *sReplace)
 {
 	bool bRet		= false;
 	int	 iPos		= 0;
-	int	 iSearchLen = sSearch ? strlen(sSearch) : 0;
+	int	 iSearchLen = sSearch ? (int)strlen(sSearch) : 0;
 
 	if (sSearch != NULL && iSearchLen != 0) {
-		int iReplaceLen = sReplace ? strlen(sReplace) : 0;
+		int iReplaceLen = sReplace ? (int)strlen(sReplace) : 0;
 
-		while ((iPos = m_sStr.find(sSearch, iPos)) >= 0) {
+		while ((iPos = (int)m_sStr.find(sSearch, iPos)) >= 0) {
 			bRet = true;
 
 			// pre-fix error check
@@ -566,7 +566,7 @@ void cstring::TrimRight(const char *sDelim)
 
 	cstring csDelim(sDelim);
 
-	for (int iPos = Length() - 1; iPos >= 0; iPos--) {
+	for (int iPos = (int)Length() - 1; iPos >= 0; iPos--) {
 		ch = s[iPos];
 
 		if (!ch || csDelim.find(ch) < 0)
@@ -593,13 +593,13 @@ cstring cstring::Tokenize(int &iPos, const char *sDelim)
 			cstring __sDelim(sDelim);
 
 			// trim deliminator
-			while (*s != '\0' && (__sDelim.find(*s) >= 0)) {
+			while (*s && (__sDelim.find(*s) >= 0)) {
 				iPos++;
 				s++;
 			}
 
 			// gets
-			while (*s != '\0' && (__sDelim.find(*s) < 0)) {
+			while (*s && (__sDelim.find(*s) < 0)) {
 				str += *s;
 				iPos++;
 				s++;
@@ -608,7 +608,7 @@ cstring cstring::Tokenize(int &iPos, const char *sDelim)
 			static cstring __sDelim(" \t\r\n");
 
 			// pass through to first char
-			while (__sDelim.find(*s) >= 0) {
+			while (*s && (__sDelim.find(*s) >= 0)) {
 				iPos++;
 				s++;
 			}
@@ -625,7 +625,7 @@ cstring cstring::Tokenize(int &iPos, const char *sDelim)
 						while (ch) {
 							str += ch;
 
-							if (ch_prev != '\\' && ch == '\"')
+							if (ch_prev && ch_prev != '\\' && ch == '\"')
 								break;
 
 							ch_prev = ch;
@@ -657,7 +657,7 @@ cstring cstring::Tokenize(int &iPos, const char *sDelim)
 static bool __SearchBracket(const char *sSearch, int &iPos, const char *sEnd = NULL)
 {
 	bool bString = sEnd ? (strcmp(sEnd, "\"") == 0) : false;
-	int	 iLen	 = sEnd ? strlen(sEnd) : 0;
+	int	 iLen	 = sEnd ? (int)strlen(sEnd) : 0;
 
 	for (;; iPos++) {
 		switch (sSearch[iPos]) {

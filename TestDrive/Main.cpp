@@ -77,7 +77,7 @@ BOOL CTestDriveApp::InitInstance()
 	EnableTaskbarInteraction();
 
 	// RichEdit 컨트롤을 사용하려면  AfxInitRichEdit2()가 있어야 합니다.	
-	//AfxInitRichEdit2();
+	AfxInitRichEdit5();
 
 	if (!CTestDrive::Initialize() || !InitRegistries())
 		return FALSE;

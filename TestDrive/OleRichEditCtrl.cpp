@@ -102,46 +102,6 @@ BOOL COleRichEditCtrl::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt){
 	return (nFlags&MK_CONTROL)!=0;
 }
 
-void COleRichEditCtrl::Test(void){
-	LPRICHEDITOLE pRichEditOle = GetIRichEditOle();
-
-	if(!pRichEditOle) return;
-
-	int			count = pRichEditOle->GetObjectCount();
-	REOBJECT	reObj;
-	
-	ZeroMemory(&reObj, sizeof(REOBJECT));
-	reObj.cbStruct  = sizeof(REOBJECT);
-	
-	for(int i=0;i<count;i++){
-		if(pRichEditOle->GetObject(0, &reObj, REO_GETOBJ_ALL_INTERFACES) == S_OK){
-			IDataObject*	lpDataObject;
-			COleDataObject	dataObject;
-
-			WCHAR* sProgID;
-			ProgIDFromCLSID(reObj.clsid, &sProgID);
-			if(wcscmp(sProgID, L"MSGraph.Chart") > 0){
-
-			}
-			//reObj.poleobj->Release();
-
-			if(reObj.poleobj->QueryInterface(IID_IDispatch, (void**)&lpDataObject) == S_OK){
-				/*STGMEDIUM	stgm;	// out
-				FORMATETC	fm;		// in
-				fm.cfFormat	= CF_BITMAP;		// Clipboard format = CF_BITMAP
-				fm.ptd		= NULL;				// Target device	= Screen
-				fm.dwAspect	= DVASPECT_CONTENT;	// Level of detail	= FULL content
-				fm.lindex	= -1;				// Index			= Not applicable
-				fm.tymed	= TYMED_GDI;		// Storage medium	= HBITMAP handle	// TYMED_GDI
-
-				dataObject.Attach(lpDataObject);*/
-			}
-		}
-	}
-
-	pRichEditOle->Release();
-}
-
 LRESULT COleRichEditCtrl::OnUpdate(WPARAM wParam, LPARAM lParam){
 	if (!m_bOpen) return 0;
 

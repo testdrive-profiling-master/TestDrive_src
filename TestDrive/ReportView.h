@@ -64,6 +64,7 @@ protected:
 	afx_msg void OnSetFocus(CWnd *pOldWnd);
 
 	COleRichEditCtrl	m_Edit;
+	CFont				m_Font;
 	CString				m_sHiperLink;
 
 	CHARFORMAT2			m_CharFormat;

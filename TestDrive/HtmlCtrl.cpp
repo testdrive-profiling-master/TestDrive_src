@@ -57,7 +57,7 @@ BOOL CHtmlCtrl::Create(CWnd* pParentWnd){
 	if(m_bOld) {
 		RECT rc;
 		CWnd::GetClientRect(&rc);
-		m_Html_old.Create(NULL, NULL, WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN | WS_CLIPSIBLINGS, rc, this, AFX_IDW_PANE_FIRST);
+		m_Html_old.Create(NULL, NULL, WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN | WS_CLIPSIBLINGS, rc, this, GetLastWindowID(this));
 		m_Html_old.SetSilent(TRUE);
 		m_Html_old.SetRegisterAsBrowser(TRUE);
 	} else {

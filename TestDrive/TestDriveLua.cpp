@@ -184,7 +184,7 @@ public:
 
 	int Length(void) const
 	{
-		return cstring::Length();
+		return (int)cstring::Length();
 	}
 	void Set(const char* sStr)
 	{
@@ -274,27 +274,27 @@ public:
 	}
 	inline int find_ch(char ch, int pos = 0)
 	{
-		return m_sStr.find(ch, pos);
+		return (int)m_sStr.find(ch, pos);
 	}
 	inline int find(const char* s, int pos = 0)
 	{
-		return m_sStr.find(s, pos);
+		return (int)m_sStr.find(s, pos);
 	}
 	inline int rfind(const char* s)
 	{
-		return m_sStr.rfind(s);
+		return (int)m_sStr.rfind(s);
 	}
 	inline int rfind_ch(char ch)
 	{
-		return m_sStr.rfind(ch);
+		return (int)m_sStr.rfind(ch);
 	}
 	inline int size(void)
 	{
-		return m_sStr.size();
+		return (int)m_sStr.size();
 	}
 	inline int length(void)
 	{
-		return m_sStr.length();
+		return (int)m_sStr.length();
 	}
 	inline void clear(void)
 	{
@@ -308,7 +308,7 @@ public:
 	inline void insert(int iPos, const char* s)
 	{
 		if (iPos < iTokenizePos)
-			iTokenizePos += strlen(s);
+			iTokenizePos += (int)strlen(s);
 
 		m_sStr.insert(iPos, s);
 	}

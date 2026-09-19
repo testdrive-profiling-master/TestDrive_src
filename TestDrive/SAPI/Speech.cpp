@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Speech.h"
+#pragma warning(disable: 4996)
 #include <sphelper.h>
+#pragma warning(enable: 4996)
 
 ISpVoice*	CSpeech::m_pVoice	= NULL;
 
