@@ -199,9 +199,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="Hexedit.exe.manifest" />
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="HexEdit.rc">
       <Filter>소스 파일</Filter>
     </ResourceCompile>
@@ -288,5 +285,10 @@
     <None Include="media\selarrow.png">
       <Filter>리소스 파일</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="Hexedit.exe.manifest">
+      <Filter>리소스 파일</Filter>
+    </Manifest>
   </ItemGroup>
 </Project>
