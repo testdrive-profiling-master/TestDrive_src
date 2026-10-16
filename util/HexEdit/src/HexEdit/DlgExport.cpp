@@ -290,7 +290,7 @@ BOOL ExportHtml(FILE *fp, HWND hwndHexView, size_w offset, size_w length, IMPEXP
 					fprintf(fp, "\">");
 				
 				// display the text fragment
-				fprintf(fp, "%.*ls", j - lastj, hfmt.szText + lastj);
+				fprintf(fp, "%.*ls", (unsigned int)(j - lastj), hfmt.szText + lastj);
 				
 				if(addCodetag == TRUE)
 					fprintf(fp, "</code>");
@@ -484,7 +484,7 @@ BOOL ExportIntelHex(FILE *fp, HWND hwndHexView, size_w offset, size_w length, IM
 		// contains the upper 16bits of the address
 		WORD highaddr = reverse16((WORD)(offset >> 16) & 0xFFFF);
 		alen = intel_frame(ach, 4, sizeof(WORD), 0, (BYTE *)&highaddr);
-		fprintf(fp, "%.*s\n", alen, ach);
+		fprintf(fp, "%.*s\n", (unsigned int)(alen), ach);
 	}
 	else if(0)
 	{
@@ -492,7 +492,7 @@ BOOL ExportIntelHex(FILE *fp, HWND hwndHexView, size_w offset, size_w length, IM
 		// contains the upper 4bits of the address (=20bit address)
 		WORD highaddr = reverse16((WORD)(offset >> 16) & 0x0FFF);
 		alen = intel_frame(ach, 2, sizeof(WORD), 0, (BYTE *)&highaddr);
-		fprintf(fp, "%.*s\n", alen, ach);
+		fprintf(fp, "%.*s\n", (unsigned int)(alen), ach);
 	}
 	else
 	{
@@ -511,7 +511,7 @@ BOOL ExportIntelHex(FILE *fp, HWND hwndHexView, size_w offset, size_w length, IM
 			WORD highaddr = reverse16((WORD)(offset >> 16) & 0xFFFF);
 			alen = intel_frame(ach, 4, sizeof(WORD), 0, (BYTE *)&highaddr);
 			
-			fprintf(fp, "%.*s\n", alen, ach);
+			fprintf(fp, "%.*s\n", (unsigned int)(alen), ach);
 			count = 0;
 		}
 
@@ -519,7 +519,7 @@ BOOL ExportIntelHex(FILE *fp, HWND hwndHexView, size_w offset, size_w length, IM
 
 		// intel 'data' record (type=0)
 		alen = intel_frame(ach, 0, len, ((size_t)offset) & 0xFFFF, buf);
-		fprintf(fp, "%.*s\n", alen, ach);
+		fprintf(fp, "%.*s\n", (unsigned int)(alen), ach);
 
 		length -= len;
 		offset += len;
@@ -528,7 +528,7 @@ BOOL ExportIntelHex(FILE *fp, HWND hwndHexView, size_w offset, size_w length, IM
 
 	// end-of-file record (type=1)
 	alen = intel_frame(ach, 1, 0, 0, 0);
-	fprintf(fp, "%.*s\n", alen, ach);
+	fprintf(fp, "%.*s\n", (unsigned int)(alen), ach);
 
 	return !ferror(fp);
 }
@@ -545,7 +545,7 @@ BOOL ExportMotorola(FILE *fp, HWND hwndHexView, size_w offset, size_w length, IM
 
 	// frame header (type=0)
 	alen = motorola_frame(ach, 0, 3, 0, (BYTE*)"HDR");
-	fprintf(fp, "%.*s\n", alen, ach);
+	fprintf(fp, "%.*s\n", (unsigned int)(alen), ach);
 
 	while(length > 0 && !ferror(fp))
 	{
@@ -556,7 +556,7 @@ BOOL ExportMotorola(FILE *fp, HWND hwndHexView, size_w offset, size_w length, IM
 
 		// 'data' record (type=3)
 		alen = motorola_frame(ach, 3, (unsigned)len, (unsigned long)offset, buf);
-		fprintf(fp, "%.*s\n", alen, ach);
+		fprintf(fp, "%.*s\n", (unsigned int)(alen), ach);
 
 		length -= len;
 		offset += len;
@@ -565,7 +565,7 @@ BOOL ExportMotorola(FILE *fp, HWND hwndHexView, size_w offset, size_w length, IM
 	// termination record
 	// 7=4byte, 8=3byte, 9=2byte
 	alen = motorola_frame(ach, 7, 0, 0, 0);
-	fprintf(fp, "%.*s\n", alen, ach);
+	fprintf(fp, "%.*s\n", (unsigned int)(alen), ach);
 
 	return !ferror(fp);
 }
@@ -582,7 +582,7 @@ BOOL ExportBase64(FILE *fp, HWND hwndHexView, size_w offset, size_w length, IMPE
 		HexView_GetDataAdv(hwndHexView, buf, len);
 
 		alen = base64_encode(buf, len, ach);
-		fprintf(fp, "%.*s\n", alen, ach);
+		fprintf(fp, "%.*s\n", (unsigned int)(alen), ach);
 
 		length -= len;
 	}
@@ -607,7 +607,7 @@ BOOL ExportUUEncode(FILE *fp, HWND hwndHexView, size_w offset, size_w length, IM
 		HexView_GetDataAdv(hwndHexView, buf, len);
 
 		alen = uu_encode(buf, len, ach);
-		fprintf(fp, "%.*s\n", alen, ach);
+		fprintf(fp, "%.*s\n", (unsigned int)(alen), ach);
 
 		length -= len;
 	}

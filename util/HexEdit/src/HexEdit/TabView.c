@@ -17,7 +17,7 @@
 #include <vssym32.h>
 #include "resource.h"
 #include "TabView.h"
-#include "trace.h"
+#include "Trace.h"
 
 HWND CreateEmptyToolbar(HWND hwndParent, int nBitmapIdx, int nBitmapWidth, int nCtrlId, DWORD dwExtraStyle);
 void AddButton(HWND hwndTB, UINT uCmdId, UINT uImageIdx, UINT uStyle, TCHAR *szText);
@@ -583,7 +583,7 @@ static LRESULT WINAPI TabView_MouseMove(TabView *tv, HWND hwnd, int x, int y)
 		//SendMessage(tv->hwndToolTip, TTM_SETTITLE, 0, (LPARAM)tv->item[i].szText);
 
 		ti.hwnd = tv->hwnd;
-		ti.uId  = (UINT)tv->hwndToolTip;
+		ti.uId  = (UINT_PTR)tv->hwndToolTip;
 		SendMessage(tv->hwndToolTip, TTM_GETTOOLINFO, 0, (LPARAM)&ti);
 
 		ti.lpszText = tv->item[i].szText;
@@ -834,7 +834,7 @@ static BOOL TabView_CreateTooltip(TabView *tv)
     ti.uFlags = TTF_SUBCLASS;//|TTF_TRACK ;
     ti.hwnd = tv->hwnd;
     ti.hinst = GetModuleHandle(0);
-    ti.uId = (UINT)hwnd;
+    ti.uId = (UINT_PTR)hwnd;
     ti.lpszText = TEXT("Ballooooon");
         // ToolTip control will cover the whole window
     ti.rect.left = 0;//rect.left;    

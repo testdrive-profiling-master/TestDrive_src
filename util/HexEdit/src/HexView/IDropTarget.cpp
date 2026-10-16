@@ -15,7 +15,7 @@
 #include <shlobj.h>
 #include "HexView.h"
 #include "HexViewInternal.h"
-#include "trace.h"
+#include "Trace.h"
 
 HRESULT GetDataObjDword(IDataObject *pDataObject, LPCTSTR szFormat, DWORD *pdwValue);
 HRESULT GetDataObjBuf(IDataObject *pDataObject, LPCTSTR szFormat, PVOID pData, DWORD nLength);
@@ -235,7 +235,7 @@ DWORD HexView::DropEffect(DWORD grfKeyState, POINTL pt, DWORD dwAllowed)
 
 bool GetStgMedium(IDataObject *pDataObject, UINT cfFormat, UINT tymed, STGMEDIUM *stgmed)
 {
-	FORMATETC fmtetc = { cfFormat, 0, DVASPECT_CONTENT, -1, tymed };
+	FORMATETC fmtetc = { (CLIPFORMAT)cfFormat, 0, DVASPECT_CONTENT, -1, tymed };
 
 	return pDataObject->GetData(&fmtetc, stgmed) == S_OK ? true : false;
 }

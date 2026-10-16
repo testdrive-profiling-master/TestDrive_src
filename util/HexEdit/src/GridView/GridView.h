@@ -371,7 +371,7 @@ typedef struct
 //
 //	GridView API
 //
-HWND CreateGridView(HWND hwndParent, int id, UINT uStyle, UINT uExStyle);
+HWND CreateGridView(HWND hwndParent, INT_PTR id, UINT uStyle, UINT uExStyle);
 void InitGridView();
 
 

@@ -17,7 +17,7 @@
 //#include <tmschema.h>
 #include "HexView.h"
 #include "HexViewInternal.h"
-#include <trace.h>
+#include "Trace.h"
 
 //extern	HIGHLIGHT m_Highlight[];
 

@@ -11,7 +11,7 @@
 #include <tchar.h>
 #include "HexView.h"
 #include "HexViewInternal.h"
-#include "trace.h"
+#include "Trace.h"
 
 bool __inline overlaps(size_w a1, size_w b1, size_w a2, size_w b2)
 {

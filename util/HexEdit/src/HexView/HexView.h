@@ -421,7 +421,7 @@ typedef struct _NMHVBOOKMARK
  *
  */
 #define HexView_SetStyle(hwnd, uMask, uStyle) \
-	(UINT)SNDMSG((hwnd), HVM_SETSTYLE, (WPARAM)(UINT)(uMask), (LPARAM)(UINT)(uStyle))
+	(UINT_PTR)SNDMSG((hwnd), HVM_SETSTYLE, (WPARAM)(UINT)(uMask), (LPARAM)(UINT)(uStyle))
 
 /**
  * Specify the byte-grouping arrangement in the hex-pane. This allows
@@ -430,10 +430,10 @@ typedef struct _NMHVBOOKMARK
  * @param UINT nBytes - the number of bytes in each column grouping
  */
 #define HexView_SetGrouping(hwnd, nBytes) \
-	(UINT)SNDMSG((hwnd), HVM_SETGROUPING, (WPARAM)(UINT)(nBytes), 0)
+	(UINT_PTR)SNDMSG((hwnd), HVM_SETGROUPING, (WPARAM)(UINT)(nBytes), 0)
 
 #define HexView_ShowPhysical(hwnd, bEnable) \
-	(UINT)SNDMSG((hwnd), HVM_SHOWPHYSICAL, (WPARAM)(bEnable), 0)
+	(UINT_PTR)SNDMSG((hwnd), HVM_SHOWPHYSICAL, (WPARAM)(bEnable), 0)
 
 /**
  * Return the current styles selected into the hexview control
@@ -442,7 +442,7 @@ typedef struct _NMHVBOOKMARK
  * @param
  */
 #define HexView_GetStyle(hwnd) \
-	(UINT)SNDMSG((hwnd), HVM_GETSTYLE, (WPARAM)(UINT)(-1), 0)
+	(UINT_PTR)SNDMSG((hwnd), HVM_GETSTYLE, (WPARAM)(UINT)(-1), 0)
 
 /**
  * Return the style value(s) specified by the mask. The uMask
@@ -451,23 +451,23 @@ typedef struct _NMHVBOOKMARK
  * @param UINT uMask - bitmask that specifies which style(s) to return
  */
 #define HexView_GetStyleMask(hwnd, uMask) \
-	(UINT)SNDMSG((hwnd), HVM_GETSTYLE, (WPARAM)(UINT)(uMask), 0)
+	(UINT_PTR)SNDMSG((hwnd), HVM_GETSTYLE, (WPARAM)(UINT)(uMask), 0)
 
 /**
  * Return the current byte-grouping arrange in the hex pane
  *
  */
 #define HexView_GetGrouping(hwnd) \
-	(UINT)SNDMSG((hwnd), HVM_GETGROUPING, 0, 0)
+	(UINT_PTR)SNDMSG((hwnd), HVM_GETGROUPING, 0, 0)
 
 //#define HexView_Highlight(hwnd, fEnable) \
-//	(UINT)SNDMSG((hwnd), HVM_HIGHLIGHT, (WPARAM)(BOOL)(fEnable), 0)
+//	(UINT_PTR)SNDMSG((hwnd), HVM_HIGHLIGHT, (WPARAM)(BOOL)(fEnable), 0)
 
 #define HexView_AddBookmark(hwnd, param) \
 	(HBOOKMARK)SNDMSG((hwnd), HVM_ADDBOOKMARK, 0, (LPARAM)(PBOOKMARK)(param))
 
 #define HexView_DelBookmark(hwnd, param) \
-	(UINT)SNDMSG((hwnd), HVM_DELBOOKMARK, (WPARAM)(HBOOKMARK)(param), 0)
+	(UINT_PTR)SNDMSG((hwnd), HVM_DELBOOKMARK, (WPARAM)(HBOOKMARK)(param), 0)
 
 /**
  * Specify a sequence of bytes that will have its every occurance
@@ -476,7 +476,7 @@ typedef struct _NMHVBOOKMARK
  * @param
  */
 #define HexView_SetSearchPattern(hwnd, pData, nLength) \
-	(UINT)SNDMSG((hwnd), HVM_SETSEARCHPAT, (WPARAM)(ULONG)(nLength), (LPARAM)(PBYTE)(pData))
+	(UINT_PTR)SNDMSG((hwnd), HVM_SETSEARCHPAT, (WPARAM)(ULONG)(nLength), (LPARAM)(PBYTE)(pData))
 
 /**
  * Return the current position of the cursor, as an offset
@@ -485,7 +485,7 @@ typedef struct _NMHVBOOKMARK
  * @param size_w *pCurPos - address of variable that will receive the value
  */
 #define HexView_GetCurPos(hwnd, pCurPos) \
-	(UINT)SNDMSG((hwnd), HVM_GETCURPOS, 0, (LPARAM)(size_w *)(pCurPos))
+	(UINT_PTR)SNDMSG((hwnd), HVM_GETCURPOS, 0, (LPARAM)(size_w *)(pCurPos))
 
 /**
  * Return the starting position of the active selection
@@ -493,7 +493,7 @@ typedef struct _NMHVBOOKMARK
  * @param size_w *pSelStart - address of variable that will receive the value
  */
 #define HexView_GetSelStart(hwnd, pSelStart) \
-	(UINT)SNDMSG((hwnd), HVM_GETSELSTART, 0, (LPARAM)(size_w *)(pSelStart))
+	(UINT_PTR)SNDMSG((hwnd), HVM_GETSELSTART, 0, (LPARAM)(size_w *)(pSelStart))
 
 /**
  * Return the ending position of the active selection
@@ -501,7 +501,7 @@ typedef struct _NMHVBOOKMARK
  * @param size_w *pSelEnd  - address of variable that will receive the value
  */
 #define HexView_GetSelEnd(hwnd, pSelEnd) \
-	(UINT)SNDMSG((hwnd), HVM_GETSELEND, 0, (LPARAM)(size_w *)(pSelEnd))
+	(UINT_PTR)SNDMSG((hwnd), HVM_GETSELEND, 0, (LPARAM)(size_w *)(pSelEnd))
 
 /**
  * Return the size of the active selection, in bytes
@@ -509,7 +509,7 @@ typedef struct _NMHVBOOKMARK
  * @param size_w *pSelSize - 
  */
 #define HexView_GetSelSize(hwnd, pSelSize) \
-	(UINT)SNDMSG((hwnd), HVM_GETSELSIZE, 0, (LPARAM)(size_w *)(pSelSize))
+	(UINT_PTR)SNDMSG((hwnd), HVM_GETSELSIZE, 0, (LPARAM)(size_w *)(pSelSize))
 
 /**
  * Return the size of the current file, in bytes
@@ -517,7 +517,7 @@ typedef struct _NMHVBOOKMARK
  * @param size_w *pFileSize - pointer to a size_w variable, into which the filesize is returned
  */
 #define HexView_GetFileSize(hwnd, pFileSize) \
-	(UINT)SNDMSG((hwnd), HVM_GETFILESIZE, 0, (LPARAM)(size_w *)(pFileSize))
+	(UINT_PTR)SNDMSG((hwnd), HVM_GETFILESIZE, 0, (LPARAM)(size_w *)(pFileSize))
 
 /**
  * Retrieve data from the active cursor location
@@ -526,7 +526,7 @@ typedef struct _NMHVBOOKMARK
  * @param  ULONG nLength - size of pData, in bytes
  */
 #define HexView_GetDataCur(hwnd, pData, nLength) \
-	(UINT)SNDMSG((hwnd), HVM_GETDATACUR, (WPARAM)(PBYTE)pData, (LPARAM)(ULONG)nLength)
+	(UINT_PTR)SNDMSG((hwnd), HVM_GETDATACUR, (WPARAM)(PBYTE)pData, (LPARAM)(ULONG)nLength)
 
 /**
  * Retrieve data from the active cursor location, and 
@@ -536,7 +536,7 @@ typedef struct _NMHVBOOKMARK
  * @param ULONG nLength - sizeof of pData, in bytes
  */
 #define HexView_GetDataAdv(hwnd, pData, nLength) \
-	(UINT)SNDMSG((hwnd), HVM_GETDATAADV, (WPARAM)(PBYTE)pData, (LPARAM)(ULONG)nLength)
+	(UINT_PTR)SNDMSG((hwnd), HVM_GETDATAADV, (WPARAM)(PBYTE)pData, (LPARAM)(ULONG)nLength)
 
 /**
  * Insert/Overwrite data into the current cursor location,
@@ -546,7 +546,7 @@ typedef struct _NMHVBOOKMARK
  * @param ULONG nLength - size of pData, in bytes
  */
 #define HexView_SetDataCur(hwnd, pData, nLength) \
-	(UINT)SNDMSG((hwnd), HVM_SETDATACUR, (WPARAM)(PBYTE)pData, (LPARAM)(ULONG)nLength)
+	(UINT_PTR)SNDMSG((hwnd), HVM_SETDATACUR, (WPARAM)(PBYTE)pData, (LPARAM)(ULONG)nLength)
 
 /**
  * Insert/Overwrite data into the current cursor location,
@@ -556,7 +556,7 @@ typedef struct _NMHVBOOKMARK
  * @param ULONG nLength - size of pData, in bytes
  */
 #define HexView_SetDataAdv(hwnd, pData, nLength) \
-	(UINT)SNDMSG((hwnd), HVM_SETDATAADV, (WPARAM)(PBYTE)pData, (LPARAM)(ULONG)nLength)
+	(UINT_PTR)SNDMSG((hwnd), HVM_SETDATAADV, (WPARAM)(PBYTE)pData, (LPARAM)(ULONG)nLength)
 
 /**
  * Undo the last edit operation
@@ -564,14 +564,14 @@ typedef struct _NMHVBOOKMARK
  * @param
  */
 #define HexView_Undo(hwnd) \
-	(UINT)SNDMSG((hwnd), HVM_UNDO, 0, 0)
+	(UINT_PTR)SNDMSG((hwnd), HVM_UNDO, 0, 0)
 
 /**
  * Repeat the last Undo operation
  *
  */
 #define HexView_Redo(hwnd) \
-	(UINT)SNDMSG((hwnd), HVM_REDO, 0, 0)
+	(UINT_PTR)SNDMSG((hwnd), HVM_REDO, 0, 0)
 
 /**
  * Remove data within the active selection, and copy it to the clipboard
@@ -579,7 +579,7 @@ typedef struct _NMHVBOOKMARK
  * @param
  */
 #define HexView_Cut(hwnd) \
-	(UINT)SNDMSG((hwnd), WM_CUT, 0, 0)
+	(UINT_PTR)SNDMSG((hwnd), WM_CUT, 0, 0)
 
 /**
  * Copy the active selection to the clipboard as CF_TEXT
@@ -587,7 +587,7 @@ typedef struct _NMHVBOOKMARK
  * @param
  */
 #define HexView_Copy(hwnd) \
-	(UINT)SNDMSG((hwnd), WM_COPY, 0, 0)
+	(UINT_PTR)SNDMSG((hwnd), WM_COPY, 0, 0)
 
 /**
  * Paste the current CF_TEXT clipboard contents into HexView
@@ -595,7 +595,7 @@ typedef struct _NMHVBOOKMARK
  * @param
  */
 #define HexView_Paste(hwnd) \
-	(UINT)SNDMSG((hwnd), WM_PASTE, 0, 0)
+	(UINT_PTR)SNDMSG((hwnd), WM_PASTE, 0, 0)
 
 /**
  * Delete the current file content, but do not
@@ -603,17 +603,17 @@ typedef struct _NMHVBOOKMARK
  *
  */
 #define HexView_Delete(hwnd) \
-	(UINT)SNDMSG((hwnd), WM_CLEAR, 0, 0)
+	(UINT_PTR)SNDMSG((hwnd), WM_CLEAR, 0, 0)
 
 #define HexView_Refresh(hwnd) \
-	(UINT)SNDMSG((hwnd), HVM_REFRESH, 0, 0)
+	(UINT_PTR)SNDMSG((hwnd), HVM_REFRESH, 0, 0)
 /**
  * Set the current edit mode (insert/overwrite/readonly)
  *
  * @param UINT nEditMode - one of the 
  */
 #define HexView_SetEditMode(hwnd, nEditMode) \
-	(UINT)SNDMSG((hwnd), HVM_SETEDITMODE, (WPARAM)(nEditMode), 0)
+	(UINT_PTR)SNDMSG((hwnd), HVM_SETEDITMODE, (WPARAM)(nEditMode), 0)
 
 /**
  * Return the current edit mode (one of the HVS_ values)
@@ -621,7 +621,7 @@ typedef struct _NMHVBOOKMARK
  * @param
  */
 #define HexView_GetEditMode(hwnd) \
-	(UINT)SNDMSG((hwnd), HVM_GETEDITMODE, 0, 0)
+	(UINT_PTR)SNDMSG((hwnd), HVM_GETEDITMODE, 0, 0)
 
 //!
 //!	HexView_OpenFile
@@ -631,7 +631,7 @@ typedef struct _NMHVBOOKMARK
 //!					HVOF_READONLY, HVOF_QUICKLOAD, HVOF_QUICKSAVE
 //!
 #define HexView_OpenFile(hwnd, szFileName, uMethod) \
-	(UINT)SNDMSG((hwnd), HVM_OPENFILE, (WPARAM)(UINT)(uMethod), (LPARAM)(LPCTSTR)(szFileName))
+	(UINT_PTR)SNDMSG((hwnd), HVM_OPENFILE, (WPARAM)(UINT)(uMethod), (LPARAM)(LPCTSTR)(szFileName))
 
 //!
 //!	HexView_SaveFile
@@ -641,13 +641,13 @@ typedef struct _NMHVBOOKMARK
 //!					HVOF_READONLY, HVOF_QUICKLOAD, HVOF_QUICKSAVE
 //!
 #define HexView_SaveFile(hwnd, szFileName, uMethod) \
-	(UINT)SNDMSG((hwnd), HVM_SAVEFILE, (WPARAM)(UINT)(uMethod), (LPARAM)(LPCTSTR)(szFileName))
+	(UINT_PTR)SNDMSG((hwnd), HVM_SAVEFILE, (WPARAM)(UINT_PTR)(uMethod), (LPARAM)(LPCTSTR)(szFileName))
 
 #define HexView_InitBuf(hwnd, pBuffer, nLength) \
-	(UINT)SNDMSG((hwnd), HVM_INITBUF, (WPARAM)(const PBYTE)(pBuffer), (LPARAM)(UINT_PTR)(nLength))
+	(UINT_PTR)SNDMSG((hwnd), HVM_INITBUF, (WPARAM)(const PBYTE)(pBuffer), (LPARAM)(UINT_PTR)(nLength))
 
 #define HexView_InitBufShared(hwnd, pBuffer, nLength) \
-	(UINT)SNDMSG((hwnd), HVM_INITBUF_SHARED, (WPARAM)(const PBYTE)(pBuffer), (LPARAM)(UINT_PTR)(nLength))
+	(UINT_PTR)SNDMSG((hwnd), HVM_INITBUF_SHARED, (WPARAM)(const PBYTE)(pBuffer), (LPARAM)(UINT_PTR)(nLength))
 
 /**
  * Return a boolean value indicating whether there are
@@ -701,7 +701,7 @@ typedef struct _NMHVBOOKMARK
  * @param size_w pos - new offset of the cursor 
  */
 #define HexView_SetCurPos(hwnd, pos) \
-	(UINT)SNDMSG((hwnd), HVM_SETCURPOS, WPARAM_SIZEW(pos), LPARAM_SIZEW(pos))
+	(UINT_PTR)SNDMSG((hwnd), HVM_SETCURPOS, WPARAM_SIZEW(pos), LPARAM_SIZEW(pos))
 
 /**
  * Set the starting position of the current selection
@@ -709,7 +709,7 @@ typedef struct _NMHVBOOKMARK
  * @param size_w pos - offset of the selection-start, in bytes
  */
 #define HexView_SetSelStart(hwnd, pos) \
-	(UINT)SNDMSG((hwnd), HVM_SETSELSTART, WPARAM_SIZEW(pos), LPARAM_SIZEW(pos))
+	(UINT_PTR)SNDMSG((hwnd), HVM_SETSELSTART, WPARAM_SIZEW(pos), LPARAM_SIZEW(pos))
 
 /**
  * Set the ending position of the current selection
@@ -717,7 +717,7 @@ typedef struct _NMHVBOOKMARK
  * @param  size_w pos - offset of selection-end, in bytes
  */
 #define HexView_SetSelEnd(hwnd, pos) \
-	(UINT)SNDMSG((hwnd), HVM_SETSELEND, WPARAM_SIZEW(pos), LPARAM_SIZEW(pos))
+	(UINT_PTR)SNDMSG((hwnd), HVM_SETSELEND, WPARAM_SIZEW(pos), LPARAM_SIZEW(pos))
 
 /**
  * Adjust the viewport so that the specified file-offset
@@ -726,7 +726,7 @@ typedef struct _NMHVBOOKMARK
  * @param  size_w pos  - offset within the file which will be scrolled into view
  */
 #define HexView_ScrollTo(hwnd, pos) \
-	(UINT)SNDMSG((hwnd), HVM_SCROLLTO, WPARAM_SIZEW(pos), LPARAM_SIZEW(pos))
+	(UINT_PTR)SNDMSG((hwnd), HVM_SCROLLTO, WPARAM_SIZEW(pos), LPARAM_SIZEW(pos))
 
 /**
  * Adjust the viewport so that the specified file-offset
@@ -735,7 +735,7 @@ typedef struct _NMHVBOOKMARK
  * @param  size_w pos  - offset within the file which will be scrolled into view
  */
 #define HexView_ScrollTop(hwnd, pos) \
-	(UINT)SNDMSG((hwnd), HVM_SCROLLTOP, WPARAM_SIZEW(pos), LPARAM_SIZEW(pos))
+	(UINT_PTR)SNDMSG((hwnd), HVM_SCROLLTOP, WPARAM_SIZEW(pos), LPARAM_SIZEW(pos))
 
 #define HexView_FormatData(hwnd, fmtparam) \
 	(int)SNDMSG((hwnd), HVM_FORMATDATA, 0, (LPARAM)(HEXFMT_PARAMS *)(fmtparam))
@@ -745,7 +745,7 @@ typedef struct _NMHVBOOKMARK
  *
  */
 #define HexView_GetLineLen(hwnd) \
-	(UINT)SNDMSG((hwnd), HVM_GETLINELEN, 0, 0)
+	(UINT_PTR)SNDMSG((hwnd), HVM_GETLINELEN, 0, 0)
 
 /**
  * Set the current line-length, in bytes
@@ -753,7 +753,7 @@ typedef struct _NMHVBOOKMARK
  * @param UINT len - length of line, in bytes
  */
 #define HexView_SetLineLen(hwnd, len) \
-	(UINT)SNDMSG((hwnd), HVM_SETLINELEN, (WPARAM)(UINT)(len), 0)
+	(UINT_PTR)SNDMSG((hwnd), HVM_SETLINELEN, (WPARAM)(UINT)(len), 0)
 
 /**
  * Returns a boolean value indicating if the HexView is in a 
@@ -769,7 +769,7 @@ typedef struct _NMHVBOOKMARK
  *
  */
 #define HexView_SelectAll(hwnd) \
-	(UINT)SNDMSG((hwnd), HVM_SELECTALL, 0, 0)
+	(UINT_PTR)SNDMSG((hwnd), HVM_SELECTALL, 0, 0)
 
 /**
  * Initialize a search with a new search term
@@ -819,7 +819,7 @@ typedef struct _NMHVBOOKMARK
  * 
  */
 #define HexView_GetCurPane(hwnd) \
-	(UINT)SNDMSG((hwnd), HVM_GETCURPANE, 0, 0)
+	(UINT_PTR)SNDMSG((hwnd), HVM_GETCURPANE, 0, 0)
 
 /**
  * Set the current editing pane - either Hex or Ascii
@@ -827,7 +827,7 @@ typedef struct _NMHVBOOKMARK
  * @param UINT pane  - either HVS_HEXPANE or HVS_ASCPANE values
  */
 #define HexView_SetCurPane(hwnd, pane) \
-	(UINT)SNDMSG((hwnd), HVM_SETCURPANE, (WPARAM)(UINT)(pane), 0)
+	(UINT_PTR)SNDMSG((hwnd), HVM_SETCURPANE, (WPARAM)(UINT)(pane), 0)
 
 /**
  * Return the path to the current file being edited
@@ -836,7 +836,7 @@ typedef struct _NMHVBOOKMARK
  * @param UINT   len  - length of [buf], in TCHARs
  */
 #define HexView_GetFileName(hwnd, buf, len) \
-	(UINT)SNDMSG((hwnd), HVM_GETFILENAME, (WPARAM)(UINT)(len), (LPARAM)(LPCTSTR)(buf))
+	(UINT_PTR)SNDMSG((hwnd), HVM_GETFILENAME, (WPARAM)(UINT)(len), (LPARAM)(LPCTSTR)(buf))
 
 /**
  * Returns whether the current file is being edited as readonly
@@ -869,7 +869,7 @@ typedef struct _NMHVBOOKMARK
  * @param UINT   uMethod    - One of the HVOF_xxx flags
  */
 #define HexView_ImportFile(hwnd, szFileName, uMethod) \
-	(UINT)SNDMSG((hwnd), HVM_IMPORTFILE, (WPARAM)(UINT)(uMethod), (LPARAM)(LPCTSTR)(szFileName))
+	(UINT_PTR)SNDMSG((hwnd), HVM_IMPORTFILE, (WPARAM)(UINT)(uMethod), (LPARAM)(LPCTSTR)(szFileName))
 
 /**
  * Adjust the horizontal and vertical spacing between characters in
@@ -880,7 +880,7 @@ typedef struct _NMHVBOOKMARK
  * @param SHORT yspace   - Vertical spacing (in pixels)
  */
 #define HexView_SetFontSpacing(hwnd, xspace, yspace) \
-	(UINT)SNDMSG((hwnd), HVM_SETFONTSPACING, 0, (LPARAM)MAKELONG((short)(xspace), (short)(yspace)))
+	(UINT_PTR)SNDMSG((hwnd), HVM_SETFONTSPACING, 0, (LPARAM)MAKELONG((short)(xspace), (short)(yspace)))
 
 /**
  * Set the font for the specified HexView control
@@ -898,7 +898,7 @@ typedef struct _NMHVBOOKMARK
  * @param COLORREF color - a RGB value, or a HEX_SYSCOLOR value
  */
 #define HexView_SetColor(hwnd, index, color) \
-	(UINT)SNDMSG((hwnd), HVM_SETCOLOR, (WPARAM)(UINT)(index), (LPARAM)(COLORREF)(color))
+	(UINT_PTR)SNDMSG((hwnd), HVM_SETCOLOR, (WPARAM)(UINT)(index), (LPARAM)(COLORREF)(color))
 
 /**
  * Get the color-value for the specified HexView display element
@@ -937,7 +937,7 @@ typedef struct _NMHVBOOKMARK
  * includes the space required for the null character
  */
 #define HexView_GetLineChars(hwnd) \
-	(UINT)SNDMSG((hwnd), HVM_GETLINECHARS, 0, 0)
+	(UINT_PTR)SNDMSG((hwnd), HVM_GETLINECHARS, 0, 0)
 
 /**
  * Offset the hex&ascii display by the given amount 
@@ -945,7 +945,7 @@ typedef struct _NMHVBOOKMARK
  * @param size_w offset  - number of bytes to offset the display by
  */
 #define HexView_SetDataShift(hwnd, offset) \
-	(UINT)SNDMSG((hwnd), HVM_SETDATASHIFT, WPARAM_SIZEW(offset), LPARAM_SIZEW(offset))
+	(UINT_PTR)SNDMSG((hwnd), HVM_SETDATASHIFT, WPARAM_SIZEW(offset), LPARAM_SIZEW(offset))
 
 
 //
@@ -991,7 +991,7 @@ ULONG WINAPI HexView_GetData(HWND hwnd, size_w offset, BYTE *buf, ULONG len);
 ULONG WINAPI HexView_FillData(HWND hwnd, BYTE *buf, ULONG buflen, size_w len);
 
 #define HexView_SetRedraw(hwnd, fRedraw) \
-	(UINT)SNDMSG((hwnd), WM_SETREDRAW, (WPARAM)(BOOL)(fRedraw), 0)
+	(UINT_PTR)SNDMSG((hwnd), WM_SETREDRAW, (WPARAM)(BOOL)(fRedraw), 0)
 
 #ifdef __cplusplus
 }

@@ -16,7 +16,7 @@
 #include "..\HexView\HexView.h"
 #include "HexUtils.h"
 #include "HexEdit.h"
-#include "trace.h"
+#include "Trace.h"
 
 IMPEXP_OPTIONS g_PasteOptions = { FORMAT_HEXDUMP, SEARCHTYPE_BYTE };
 

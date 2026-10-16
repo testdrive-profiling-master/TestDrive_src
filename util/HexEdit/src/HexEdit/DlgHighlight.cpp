@@ -295,7 +295,7 @@ void FillGridView2(HWND hwndGV, HGRIDITEM hGridItem, HBOOKMARK hbm, BOOKMARK *bm
 	HGRIDITEM hItem;
 
 	TCHAR szOffset[32];
-	_stprintf(szOffset, TEXT("%08I64X  (%d bytes)"), bm->offset, bm->length);
+	_stprintf(szOffset, TEXT("%08llX  (%lld bytes)"), (size_t)bm->offset, (size_t)bm->length);
 
 	gvitem.pszText	= bm->pszTitle;
 	gvitem.iSubItem = 0;

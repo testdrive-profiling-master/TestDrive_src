@@ -11,7 +11,7 @@
 #include <tchar.h>
 #include <uxtheme.h>
 
-#include "trace.h"
+#include "Trace.h"
 #include "docklib.h"
 #include "dockwnd.h"
 

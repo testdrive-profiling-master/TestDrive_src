@@ -11,7 +11,7 @@
 //
 #include <windows.h>
 #include <tchar.h>
-#include "trace.h"
+#include "Trace.h"
 #include "docklib.h"
 #include "dockwnd.h"
 

@@ -14,7 +14,7 @@
 #define _WIN32_WINNT 0x0500
 #include <windows.h>
 #include <tchar.h>
-#include <trace.h>
+#include "Trace.h"
 #include "HexView.h"
 #include "HexViewInternal.h"
 

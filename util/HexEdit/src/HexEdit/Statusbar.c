@@ -14,7 +14,7 @@
 #define _WIN32_WINNT 0x501
 #include <windows.h>
 #include <tchar.h>
-#include <trace.h>
+#include "Trace.h"
 #include <commctrl.h>
 #include "HexEdit.h"
 #include "HexUtils.h"
@@ -365,7 +365,7 @@ void UpdateStatusbar(HWND hwndSB)
 	}
 }
 
-HWND CreateToolbarPart(HWND hwndStatusBar, int nCtrlId, int nBitmapResId, int nBmpIdx)
+HWND CreateToolbarPart(HWND hwndStatusBar, UINT_PTR nCtrlId, int nBitmapResId, int nBmpIdx)
 {
 	HWND hwndStatusTB;
 	DWORD flags;

@@ -20,7 +20,7 @@
 #include "HexEdit.h"
 #include "HexUtils.h"
 #include "resource.h"
-#include "trace.h"
+#include "Trace.h"
 #include "base64.h"
 #include "endian.h"
 

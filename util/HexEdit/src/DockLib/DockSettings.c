@@ -17,7 +17,7 @@
 #include <uxtheme.h>
 #include <shlwapi.h>
 
-#include "trace.h"
+#include "Trace.h"
 #include "docklib.h"
 #include "dockwnd.h"
 

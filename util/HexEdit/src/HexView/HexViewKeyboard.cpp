@@ -10,7 +10,7 @@
 #include <windows.h>
 #include "HexView.h"
 #include "HexViewInternal.h"
-#include "trace.h"
+#include "Trace.h"
 
 bool IsKeyDown(UINT uVirtualKey)
 {

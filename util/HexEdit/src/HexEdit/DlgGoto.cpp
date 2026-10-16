@@ -114,7 +114,7 @@ INT_PTR CALLBACK GotoDlgProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			if((bm.flags & HVBF_NOPERSIST) == 0)
 			{
 				TCHAR *s = bm.pszTitle ? bm.pszTitle : bm.pszText;
-				_stprintf(buf, TEXT("%08I64X   %s"), bm.offset, s);
+				_stprintf(buf, TEXT("%08llX   %s"), (size_t)bm.offset, s);
 
 				idx = (int)SendDlgItemMessage(hwnd, IDC_BOOKMARKS, CB_ADDSTRING, 0, (LPARAM)buf);
 				SendDlgItemMessage(hwnd, IDC_BOOKMARKS, CB_SETITEMDATA, idx, (LPARAM)hbm);

@@ -61,7 +61,7 @@ HWND CreateEmptyToolbar(HWND hwndParent, int nBitmapIdx, int nBitmapWidth, int n
 void AddButton(HWND hwndTB, UINT uCmdId, UINT uImageIdx, UINT uStyle, TCHAR *szText);
 int  ResizeToolbar(HWND hwndTB);
 //HWND CreateChild(DWORD dwStyleEx, DWORD dwStyle, TCHAR *szClass, HWND hwndParent);
-HWND CreateChild(DWORD dwStyleEx, DWORD dwStyle, TCHAR *szClass, HWND hwndParent, UINT nCommandId);
+HWND CreateChild(DWORD dwStyleEx, DWORD dwStyle, TCHAR *szClass, HWND hwndParent, UINT_PTR nCommandId);
 
 HWND PrepGridView(HWND hwndGridView, int widthArray[], TCHAR *szTypeName);
 HWND PrepAllTypes(HWND hwndGridView, int widthArray[]);
@@ -73,7 +73,7 @@ void UpdateTypeView();
 DWORD SetTypeGV(HWND hwndGridView, HGRIDITEM hItem, TypeDecl *typeDecl, DWORD offset);
 }
 
-HWND CreateChild(DWORD dwStyleEx, DWORD dwStyle, TCHAR *szClass, HWND hwndParent, UINT nCommandId)
+HWND CreateChild(DWORD dwStyleEx, DWORD dwStyle, TCHAR *szClass, HWND hwndParent, UINT_PTR nCommandId)
 {
 	static HFONT hFont;
 
@@ -508,7 +508,7 @@ LONG OnGridViewDropDown(HWND hwnd, UINT msg, NMGRIDVIEW *nmgv)
 //
 LRESULT CALLBACK TypeViewCommandHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	INITCOMMONCONTROLSEX ice = { sizeof(ice), -1 };
+	INITCOMMONCONTROLSEX ice = { (DWORD)sizeof(ice), (DWORD)-1 };
 	TCHAR szTextBuf[200];
 
 	HWND hwndGridView = GetDlgItem(hwnd, IDC_TYPEVIEW_GRIDVIEW);

@@ -14,7 +14,7 @@
 #include <tchar.h>
 #include "HexView.h"
 #include "HexViewInternal.h"
-#include "trace.h"
+#include "Trace.h"
 
 HRESULT CreateDropSource(IDropSource **ppDropSource);
 HRESULT CreateDataObject(int max, IDataObject **ppDataObject);

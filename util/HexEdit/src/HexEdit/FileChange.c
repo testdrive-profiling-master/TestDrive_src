@@ -10,7 +10,7 @@
 #define _WIN32_WINNT 0x501
 #include <windows.h>
 #include <tchar.h>
-#include "trace.h"
+#include "Trace.h"
 #include "FileChange.h"
 
 void GetLastWriteTime(TCHAR *szFile, FILETIME *wt)

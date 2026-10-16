@@ -150,7 +150,7 @@ void DockWnd_ToggleDockingMode(HWND hwnd)
 {
 	HWND hwndParent = GetOwner(hwnd);
 
-	DockWnd *dwp = (DockWnd *)GetWindowLong(hwnd, GWL_USERDATA);
+	DockWnd *dwp = (DockWnd *)GetWindowLongPtr(hwnd, GWLP_USERDATA);
 
 	if(dwp == 0) return;
 
@@ -533,7 +533,7 @@ static LRESULT CALLBACK DockWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 
 	WINDOWPOS *wp;
 
-	DockWnd *dwp = (DockWnd *)GetWindowLong(hwnd, GWL_USERDATA);
+	DockWnd *dwp = (DockWnd *)GetWindowLongPtr(hwnd, GWLP_USERDATA);
 
 	switch(msg)
 	{
@@ -1034,7 +1034,7 @@ HWND CreateDockWnd(DockWnd *dwp, HWND hwndParent, TCHAR szCaption[])
 	dwp->fDragging = FALSE;
 
 	// Assign the dock-window structure to the physical window
-	SetWindowLong(hwnd, GWL_USERDATA, (LONG)dwp);
+	SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)dwp);
 
 	SetParent(dwp->hwndContents, hwnd);
 

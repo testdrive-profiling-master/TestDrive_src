@@ -14,7 +14,7 @@
 #include <tchar.h>
 #include "HexView.h"
 #include "HexViewInternal.h"
-#include "trace.h"
+#include "Trace.h"
 
 #if 0
 

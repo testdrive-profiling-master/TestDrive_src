@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include "HexView.h"
 #include "HexViewInternal.h"
-#include "trace.h"
+#include "Trace.h"
 
 // delay-load the UXTHEME library
 //#pragma comment(lib, "DelayImp.lib")

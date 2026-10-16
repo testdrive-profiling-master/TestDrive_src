@@ -13,7 +13,7 @@
 
 #include <windows.h>
 #include <tchar.h>
-#include "trace.h"
+#include "Trace.h"
 #include "HexViewInternal.h"
 
 // defined in ienumformat.cpp
@@ -499,7 +499,7 @@ HRESULT GetDataObjBuf(IDataObject *pDataObject, LPCTSTR szFormat, PVOID pData, D
 	return success;
 }
 
-HRESULT SetDataObjDword(IDataObject *pDataObject, LPCTSTR szFormat, DWORD dwValue)
+HRESULT SetDataObjDword(IDataObject *pDataObject, LPCTSTR szFormat, DWORD_PTR dwValue)
 {
 	return SetDataObjBuf(pDataObject, szFormat, &dwValue, sizeof(dwValue));
 }
@@ -579,10 +579,10 @@ bool HexView::CreateDataObject (size_w offset, size_w length, IDataObject **ppDa
 	pDataObject->SetData(&fmtetc, &stgmed, TRUE);*/
 
 	// set the RLE32HexBinary
-	SetDataObjDword(pDataObject, CFSTR_HEX_DATALEN, (DWORD)SelectionSize());
+	SetDataObjDword(pDataObject, CFSTR_HEX_DATALEN, (DWORD_PTR)SelectionSize());
 
 	// set the HexHWND
-	SetDataObjDword(pDataObject, CFSTR_HEX_HWND, (DWORD)m_hWnd);
+	SetDataObjDword(pDataObject, CFSTR_HEX_HWND, (DWORD_PTR)m_hWnd);
 
 	// create a snapshot of the specified range of data, but
 	// store the *address* of it on the clipboard. This is fine

@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include "HexView.h"
 #include "HexViewInternal.h"
-#include <trace.h>
+#include "Trace.h"
 
 #define SHADOW_DEPTH 2
 

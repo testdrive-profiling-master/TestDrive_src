@@ -241,7 +241,7 @@ LRESULT CALLBACK ComboProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			GetClientRect(hwnd, &rect);
 			{
 				int idx = (int)SendMessage(hwnd, CB_GETCURSEL, 0, 0);
-				DRAWITEMSTRUCT dis = { ODT_COMBOBOX, GetWindowLong(hwnd, GWL_ID),
+				DRAWITEMSTRUCT dis = { ODT_COMBOBOX, GetWindowLongPtr(hwnd, GWL_ID),
 					idx, ODA_DRAWENTIRE, 0, hwnd, ps.hdc, 0, (int)SendMessage(hwnd, CB_GETITEMDATA, idx, 0) };
 				CopyRect(&dis.rcItem, &rect);
 				dis.itemData = SendMessage(hwnd, CB_GETITEMDATA, idx, 0);

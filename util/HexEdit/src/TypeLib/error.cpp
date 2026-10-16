@@ -49,7 +49,7 @@ const char * Parser::inenglish(TOKEN t, bool use_t_state)
 	}
 	else if(t == TOK_INUMBER)
 	{
-		sprintf(buf, "'%d'", tnum);
+		sprintf(buf, "'%lld'", tnum);
 		return buf;
 	}
 	else if(t == TOK_FNUMBER)

@@ -63,7 +63,7 @@ static HWND CreateGVToolTip(HWND hwndParent)
 	ti.uFlags	= TTF_SUBCLASS|TTF_IDISHWND|TTF_TRANSPARENT;//0;//TTF_SUBCLASS ;
 	ti.lpszText = LPSTR_TEXTCALLBACK ;
 		//_T("hello");//LPSTR_TEXTCALLBACK;//_T("hello");
-	ti.uId		= (ULONG)hwndParent;
+	ti.uId		= (ULONG_PTR)hwndParent;
 	ti.hinst	= 0;//GetModuleHandle(0);
 	
 	//SetRect(&ti.rect, 0, 0, 1600, 600);
@@ -698,7 +698,7 @@ void InitGridView()
 	RegisterClassEx(&wc);
 }
 
-HWND CreateGridView(HWND hwndParent, int id, UINT uStyle, UINT uExStyle)
+HWND CreateGridView(HWND hwndParent, INT_PTR id, UINT uStyle, UINT uExStyle)
 {
 	if(uStyle == 0)
 		uStyle = WS_CLIPCHILDREN|WS_CLIPSIBLINGS|WS_TABSTOP|

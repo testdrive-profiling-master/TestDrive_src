@@ -11,7 +11,7 @@
 #include <tchar.h>
 #include "HexView.h"
 #include "HexViewInternal.h"
-#include "trace.h"
+#include "Trace.h"
 
 HRESULT GetDataObjBuf(IDataObject *pDataObject, LPCTSTR szFormat, PVOID pData, DWORD nLength);
 HRESULT GetDataObjDword(IDataObject *pDataObject, LPCTSTR szFormat, DWORD *pdwValue);

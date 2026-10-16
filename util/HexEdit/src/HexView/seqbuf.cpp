@@ -13,7 +13,7 @@
 #include <tchar.h>
 #include <new>
 #include "sequence.h"
-#include "trace.h"
+#include "Trace.h"
 #include "TestDriver.inl"
 
 bool read_data(HANDLE hFile, seqchar *buffer, size_w offset, size_w length)
@@ -262,7 +262,7 @@ bool sequence::buffer_control::load(const TCHAR * filename, size_w* pBaseAddress
 		}
 
 		if((mmap.pMem = TestDriver_GetMemory(sName))){
-			DWORD	dwSize	= mmap.pMem->GetSize() - mmap.dwViewOffset;
+			size_t	dwSize	= mmap.pMem->GetSize() - mmap.dwViewOffset;
 			BYTE*	pBuff	= mmap.pMem->GetPointer(mmap.dwViewOffset, mmap.dwViewSize);
 
 			if(pBaseAddress) *pBaseAddress	= mmap.dwBaseAddress;

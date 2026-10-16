@@ -26,7 +26,7 @@
 HWND CreateToolbar(HWND hwndParent,DWORD);
 void DrawGripper(HDC hdc, int x, int y, int height, int numgrips);
 HDWP StretchWindowToRight(HWND hwndCtrl, HWND hwndParent, int margin, HDWP hdwp);
-extern "C" HWND CreateChild(DWORD dwStyleEx, DWORD dwStyle, TCHAR *szClass, HWND hwndParent, UINT nCommandId);
+extern "C" HWND CreateChild(DWORD dwStyleEx, DWORD dwStyle, TCHAR *szClass, HWND hwndParent, UINT_PTR nCommandId);
 
 
 static DWORD TOOLBAR_STYLE =WS_CHILD | TBSTYLE_FLAT | TBSTYLE_TOOLTIPS | TBSTYLE_TRANSPARENT |
@@ -48,10 +48,10 @@ void AddButton(HWND hwndTB, UINT uCmdId, UINT uImageIdx, UINT uStyle, TCHAR *szT
 {
 	TBBUTTON tbb = 
 	{ 
-		uImageIdx, 
-		uCmdId, 
+		(int)uImageIdx, 
+		(int)uCmdId, 
 		TBSTATE_ENABLED, 
-		uStyle| BTNS_SHOWTEXT, 
+		(BYTE)(uStyle| BTNS_SHOWTEXT), 
 		{0}, 0, 
 		(INT_PTR)szText 
 	};
@@ -138,8 +138,8 @@ typedef PVOID (__fastcall * VALIDATEHWND)(HWND hwnd);
 
 PVOID ValidateHwnd(HWND hwnd)
 {
-    DWORD ptr  =  (DWORD  )memchr((const void *)GetWindowRect, 0xE8, 100);
-    DWORD addr = *(DWORD *)(ptr+1) + ptr + 5;
+    DWORD_PTR ptr  =  (DWORD_PTR  )memchr((const void *)GetWindowRect, 0xE8, 100);
+    DWORD_PTR addr = *(DWORD *)(ptr+1) + ptr + 5;
 
     VALIDATEHWND _ValidateHwnd = (VALIDATEHWND)addr;
 	//PVOID (__fastcall * _ValidateHwnd)(HWND hwnd) = ((PVOID)(__fastcall *)(HWND))addr;
