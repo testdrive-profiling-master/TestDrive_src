@@ -143,7 +143,7 @@ void TextFile::Write(const char* sFormat, ...)
 bool TextFile::GetLine(cstring& sLine, bool bUseComment)
 {
 	static char		sTemp[1024];
-	char*	sTok		= NULL;
+	char*			sTok		= NULL;
 	sLine.clear();
 
 	if(!m_fp || m_bWrite) return false;
@@ -155,7 +155,7 @@ RE_GET:
 	// get full line
 	sLine	+= sTemp;
 	{
-		int iLen = strlen(sTemp);
+		size_t iLen = strlen(sTemp);
 
 		if(iLen > 0 && sTemp[iLen - 1] != '\n' && !feof(m_fp)) goto RE_GET;
 	}
@@ -164,25 +164,25 @@ RE_CHECK_COMMENT:
 
 	if(bUseComment) {
 		if(m_bComment) {
-			int iPos = sLine.find("*/");
+			size_t iPos = sLine.find("*/");
 
 			if(iPos >= 0) {
 				m_bComment	= false;
-				sLine.erase(0, iPos + 2);
+				sLine.erase(0, (int)iPos + 2);
 				goto RE_CHECK_COMMENT;
 			} else sLine.clear();
 		} else {
 			sLine.CutBack("//", true);
-			int iPos = sLine.find("/*");
+			size_t iPos = sLine.find("/*");
 
 			if(iPos >= 0) {
-				int iEnd = sLine.find("*/", iPos + 2);
+				size_t iEnd = sLine.find("*/", (int)iPos + 2);
 
 				if(iEnd >= 0) {
-					sLine.erase(iPos, iEnd - iPos + 2);
+					sLine.erase((int)iPos, (int)(iEnd - iPos + 2));
 					goto RE_CHECK_COMMENT;
 				} else {
-					sLine.erase(iPos, -1);
+					sLine.erase((int)iPos, -1);
 					m_bComment	= true;
 				}
 			}
