@@ -284,7 +284,14 @@ int _tmain(int argc, _TCHAR* argv[])
 
 			while(sExchange->Replace(__TAG[TAG_CHECK], ""));
 			while(sExchange->Replace(__TAG[TAG_TITLE], __env.sTitle));			// title
-			while(sExchange->Replace(__TAG[TAG_YEAR], sYear));					// year
+			{
+				CString sTag;
+				sTag.Format("%s~%s", sYear, __TAG[TAG_YEAR]);
+				while(sExchange->Replace(sTag, sYear));							// year~year (same year)
+				sTag.Format("%s ~ %s", sYear, __TAG[TAG_YEAR]);
+				while(sExchange->Replace(sTag, sYear));							// year ~ year (same year)
+				while(sExchange->Replace(__TAG[TAG_YEAR], sYear));				// year
+			}
 			while(sExchange->Replace(__TAG[TAG_DATE], sDate));					// date
 			while(sExchange->Replace(__TAG[TAG_TIME], sTime));					// time
 			while(sExchange->Replace(__TAG[TAG_AUTHOR], __env.sAuthor));		// author
