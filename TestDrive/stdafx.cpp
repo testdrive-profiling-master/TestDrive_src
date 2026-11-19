@@ -170,9 +170,28 @@ CString GetGlobalEnvironmentVariable(LPCTSTR sName){
 void ModifyGlobalEnvironmentPath(LPCTSTR sPathAdd, LPCTSTR sPathRemove, BOOL bHeadToAdd){
 	static LPCTSTR	sPathEnvironment	= _T("Path");
 	BOOL bChanged						= FALSE;
+	BOOL bJustDoIt						= FALSE;
 	CString sEnv						= GetGlobalEnvironmentVariable(sPathEnvironment);
+	
+	if (sPathAdd && !sPathRemove && sEnv.Find(sPathAdd) >= 0) {
+		if (bHeadToAdd) {
+			CString sAdd;
+			sAdd.Format(_T(";%s"), sPathAdd);
+			if (sEnv.Find(sPathAdd) == (sEnv.GetLength() - sAdd.GetLength())) {
+				sPathRemove = sPathAdd;
+				bJustDoIt = TRUE;
+			}
+		} else {
+			CString sAdd;
+			sAdd.Format(_T("%s;"), sPathAdd);
+			if (sEnv.Find(sPathAdd) == 0) {
+				sPathRemove = sPathAdd;
+				bJustDoIt = TRUE;
+			}
+		}
+	}
 
-	if(!sPathAdd || sEnv.Find(sPathAdd)<0){
+	if(bJustDoIt || !sPathAdd || sEnv.Find(sPathAdd)<0){
 		// 중복 경로 제거
 		if(sPathRemove){
 			CString sFind(sPathRemove);
@@ -204,9 +223,10 @@ void ModifyGlobalEnvironmentPath(LPCTSTR sPathAdd, LPCTSTR sPathRemove, BOOL bHe
 		if(sPathAdd){
 			if(sEnv.GetLength()){
 				if(bHeadToAdd){
-					CString sOld	= sEnv;
-					sEnv.Format(_T("%s;%s"), sPathAdd, (LPCTSTR)sOld);
+					sEnv.Insert(0, _T(";"));
+					sEnv.Insert(0, sPathAdd);
 				}else{
+					sEnv.TrimRight(_T(";"));
 					sEnv.AppendFormat(_T(";%s"), sPathAdd);
 				}
 			}else{
