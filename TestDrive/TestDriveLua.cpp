@@ -547,7 +547,7 @@ namespace Lua_System {
 					if (full_path.Path()[iLen - 1] == _T('\\'))
 						full_path.Path().SetAt(iLen - 1, _T('\0'));
 				}
-				ModifyGlobalEnvironmentPath(full_path);
+				ModifyGlobalEnvironmentPath(full_path, NULL, FALSE);
 			}
 		}
 		else {

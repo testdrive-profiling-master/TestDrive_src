@@ -202,7 +202,6 @@ BOOL CTestDriveApp::InitRegistries(void) {
 	}
 	// MinGW 환경 추가
 	ModifyGlobalEnvironmentPath(CString(InstalledPath()) + _T("bin\\msys64\\usr\\bin"), _T("\\msys64\\usr\\bin"));
-	ModifyGlobalEnvironmentPath(CString(InstalledPath()) + _T("bin\\msys64\\mingw64\\bin"), _T("\\msys64\\mingw64\\bin"));
 	ModifyGlobalEnvironmentPath(CString(InstalledPath()) + _T("bin\\msys64\\ucrt64\\bin"), _T("\\msys64\\ucrt64\\bin"));
 
 	return TRUE;
